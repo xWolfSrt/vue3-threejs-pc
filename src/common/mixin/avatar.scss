@@ -1,0 +1,6 @@
+@mixin avatar($r) {
+  @include radius($r);
+  @include hairline(all, $border1, 3.75rem);
+  position: relative;
+  margin-right: 0.12rem;
+}

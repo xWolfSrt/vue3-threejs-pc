@@ -1,0 +1,22 @@
+@mixin square($a) {
+    display: block;
+    width: $a;
+    height: $a;
+    line-height: $a;
+    text-align: center;
+}
+
+@mixin radius($a, $b: 2 * $a) {
+    display: block;
+    width: $a;
+    height: $a;
+    line-height: $a;
+    border-radius: $b;
+    text-align: center;
+}
+
+// 尺寸
+@mixin size($w, $h) {
+    width: $w;
+    height: $h;
+}

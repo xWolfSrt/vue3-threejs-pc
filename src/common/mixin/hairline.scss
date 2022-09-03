@@ -1,0 +1,119 @@
+@mixin hairline-common($direction, $color) {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  background-color: $color;
+  transform-origin: 100% 50%;
+  pointer-events: none;
+  @if $direction == top {
+    transform: scaleY(0.5) translateY(-100%);
+    @media (min-resolution: 3dppx) {
+      transform: scaleY(0.33) translateY(-100%);
+    }
+  } @else if $direction == bottom {
+    transform: scaleY(0.5) translateY(100%);
+    @media (min-resolution: 3dppx) {
+      transform: scaleY(0.33) translateY(100%);
+    }
+  } @else if $direction == left {
+    transform: scaleX(0.5) translateX(-100%);
+    @media (min-resolution: 3dppx) {
+      transform: scaleX(0.33) translateX(-100%);
+    }
+  } @else if $direction == right {
+    transform: scaleX(0.5) translateX(100%);
+    @media (min-resolution: 3dppx) {
+      transform: scaleX(0.33) translateX(100%);
+    }
+  }
+}
+
+@mixin hairline($direction: all, $color: #f1f2f6, $radius: 0, $size: 0.01rem) {
+  @if $direction == top {
+    &::after {
+      @include hairline-common($direction, $color);
+      top: 0;
+      left: 0;
+      right: auto;
+      bottom: auto;
+      width: 100%;
+      height: $size;
+      transform-origin: 50% 0;
+    }
+  } @else if $direction == bottom {
+    &::after {
+      @include hairline-common($direction, $color);
+      bottom: 0;
+      left: 0;
+      right: auto;
+      top: auto;
+      width: 100%;
+      height: $size;
+      transform-origin: 50% 100%;
+    }
+  } @else if $direction == left {
+    &::after {
+      @include hairline-common($direction, $color);
+      top: 0;
+      left: 0;
+      right: auto;
+      bottom: auto;
+      width: $size;
+      height: 100%;
+      transform-origin: 0 100%;
+    }
+  } @else if $direction == right {
+    &::after {
+      @include hairline-common($direction, $color);
+      top: 0;
+      right: 0;
+      left: auto;
+      bottom: auto;
+      width: $size;
+      height: 100%;
+      transform-origin: 100% 50%;
+    }
+  } @else {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: auto;
+      bottom: auto;
+      width: 200%;
+      height: 200%;
+      border: solid $size $color;
+      border-radius: $radius * 2;
+      box-sizing: border-box;
+      transform-origin: 0 0;
+      transform: scale(0.5);
+      z-index: 2;
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin remove-hairline($direction: all) {
+  @if $direction == top {
+    &::after {
+      display: none;
+    }
+  } @else if $direction == bottom {
+    &::after {
+      display: none;
+    }
+  } @else if $direction == left {
+    &::after {
+      display: none;
+    }
+  } @else if $direction == right {
+    &::after {
+      display: none;
+    }
+  } @else {
+    &::after {
+      display: none;
+    }
+  }
+}

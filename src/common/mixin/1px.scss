@@ -1,0 +1,51 @@
+@mixin setTopLine($c: $border1) {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 0.01rem;
+  border-top: 0.01rem solid $c;
+  color: $c;
+  transform-origin: 0 0;
+  transform: scaleY(0.5);
+}
+
+@mixin setBottomLine($c: $border1) {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 0.01rem;
+  border-bottom: 0.01rem solid $c;
+  color: $c;
+  transform-origin: 0 100%;
+  transform: scaleY(0.5);
+}
+
+@mixin setLeftLine($c: $border1) {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.01rem;
+  bottom: 0;
+  border-left: 0.01rem solid $c;
+  color: $c;
+  transform-origin: 0 0;
+  transform: scaleX(0.5);
+}
+
+@mixin setRightLine($c: $border1) {
+  content: ' ';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0.01rem;
+  bottom: 0;
+  border-right: 0.01rem solid $c;
+  color: $c;
+  transform-origin: 100% 0;
+  transform: scaleX(0.5);
+}

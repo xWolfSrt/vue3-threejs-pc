@@ -1,0 +1,60 @@
+@mixin ellipsis($w: auto) {
+    width: $w;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+@mixin ellipsisLn($line) {
+    display: -webkit-box;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+}
+
+@mixin text-wrap() {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+// 2. 文本
+// 禁止文本被选择
+@mixin user-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+// 美化文本选中 ::selection
+@mixin beauty-select($color, $bgcolor) {
+    &::selection {
+        color: $color;
+        background-color: $bgcolor;
+    }
+}
+
+// 美化占位符 placeholder 样式
+@mixin beauty-placeholder($fz, $color: #999, $align: left) {
+    &:-moz-placeholder {
+        font-size: $fz;
+        color: $color;
+        text-align: $align;
+    }
+    &:-ms-input-placeholder {
+        font-size: $fz;
+        color: $color;
+        text-align: $align;
+    }
+    &::-webkit-input-placeholder {
+        font-size: $fz;
+        color: $color;
+        text-align: $align;
+    }
+}
