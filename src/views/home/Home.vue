@@ -11,6 +11,9 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBEloader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { ref, reactive, getCurrentInstance, type ComponentInternalInstance, onMounted } from 'vue'
 
+import * as ThreeUtil from '../../utils/threejs/util'
+import { Vector3 } from 'three'
+
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const container = ref<HTMLElement | null>(null)
@@ -33,23 +36,24 @@ const init = () => {
     scene = new THREE.Scene()
     console.log(scene)
 
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-    camera.position.set(100, 100, 100)
-    camera.lookAt(scene.position)
-    scene.add(camera)
-    renderer = new THREE.WebGLRenderer({
-        antialias: true,
+    // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
+    // camera.position.set(100, 100, 100)
+    // camera.lookAt(scene.position)
+
+    camera = ThreeUtil.initCamera({
+        position: new Vector3(100, 100, 100),
+        lookAt: scene.position,
     })
+    scene.add(camera)
+
+    renderer = ThreeUtil.initWebGLRenderer()
     // renderer.physicallyCorrectLights = true
     // renderer.shadowMap.enabled = true
     // renderer.setClearColor(0xffffff, 1)
-    renderer.outputEncoding = THREE.sRGBEncoding //防止模型过暗
     renderer.setAnimationLoop(render)
-    renderer.setSize(window.innerWidth, window.innerHeight)
     container.value?.appendChild(renderer.domElement)
 
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
+    controls = ThreeUtil.initOrbitControls(camera, renderer.domElement)
 
     const axesHelper = new THREE.AxesHelper(300)
     scene.add(axesHelper)
@@ -208,16 +212,15 @@ const addObject = () => {
     document.body.appendChild(stats.dom)
 
     //精灵模型
-    const spriteMap = new THREE.TextureLoader().load(
-        drawTextCanvas({ text: '测试一下文字测试一下文字文字下文字文字测试', size: 40, color: 'red' })?.toDataURL() || ''
-    )
-    const spriteMaterial = new THREE.SpriteMaterial({
-        color: 0xffffff,
-        map: spriteMap,
+    const sprite = ThreeUtil.getTextSprite({
+        position: new THREE.Vector3(-50, 50, 20),
+        scale: new THREE.Vector3(5, 5, 1),
+        text: '测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试',
+        size: 60,
+        color: 'red',
+        maxLine: 1,
+        maxWidth: 500,
     })
-    const sprite = new THREE.Sprite(spriteMaterial)
-    sprite.position.set(-50, 50, 20)
-    sprite.scale.set(5, 5, 1)
     scene.add(sprite)
 }
 

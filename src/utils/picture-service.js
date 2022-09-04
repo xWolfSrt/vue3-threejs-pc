@@ -300,4 +300,5 @@ export default {
     getPictures,
     compressPicture,
     getMainColor,
+    image2Base64,
 }

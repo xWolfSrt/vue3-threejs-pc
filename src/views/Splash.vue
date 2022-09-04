@@ -11,6 +11,14 @@
                 <span>跳过</span>
             </div>
         </div>
+        <div
+            :style="{
+                background: `url(${background})`,
+                width: '100%',
+                height: '100%',
+                backgroundSize: '100% 100%',
+            }"
+        ></div>
     </div>
 </template>
 <script setup>
@@ -19,7 +27,7 @@ import dateService from '../utils/date-service'
 import pictureService from '../utils/picture-service'
 
 const { proxy } = getCurrentInstance()
-
+const background = ref('')
 onMounted(() => {
     setTimeout(() => {
         // proxy.$router.replace('/login' )
@@ -30,16 +38,26 @@ onMounted(() => {
         //         toHome: false,
         //     },
         // })
-
         // let token = proxy.$storage.get('token')
         // if (token) {
         //     proxy.$router.replace('/home')
         // } else {
         //     proxy.$router.replace('/login')
         // }
-
         disposeConfig()
     }, 800)
+
+    // let image = new Image()
+    // image.setAttribute('crossOrigin', 'Anonymous') //跨域在前
+    // //赋值在后
+    // image.src =
+    //     'http://223.82.99.213:8100/stage-api/profile/upload/2022/08/24/%E4%BA%95%E5%86%88%E5%B1%B1%E7%B2%BE%E7%A5%9E_1605098934530_20220824153321A024.jpg'
+    // //剩下就可以安心的调用toDataUrl了。
+    // image.onload = function () {
+    //     let data = pictureService.image2Base64(image)
+    //     console.log(data)
+    //     background.value = data.dataURL
+    // }
 })
 const data = reactive({
     ad: undefined,
