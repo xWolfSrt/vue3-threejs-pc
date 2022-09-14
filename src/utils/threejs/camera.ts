@@ -20,12 +20,7 @@ export interface CameraConfig {
  * @returns
  */
 export function initCamera(config?: CameraConfig) {
-    const camera = new THREE.PerspectiveCamera(
-        config?.fov || 75,
-        config?.aspect || window.innerWidth / window.innerHeight,
-        config?.near || 1,
-        config?.far || 1000
-    )
+    const camera = new THREE.PerspectiveCamera(config?.fov || 75, config?.aspect || 1, config?.near || 1, config?.far || 1000)
     if (config?.position) {
         camera.position.set(config.position.x, config.position.y, config.position.z)
     } else {

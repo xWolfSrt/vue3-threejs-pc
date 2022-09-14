@@ -40,7 +40,7 @@ const routes = [
     },
     {
         path: '/home',
-        component: () => import('@/views/home/Home.vue'),
+        component: () => import('@/views/home/Home1.vue'),
     },
     {
         path: '/:error*', // /:error -> 匹配 /, /one, /one/two, /one/two/three, 等
