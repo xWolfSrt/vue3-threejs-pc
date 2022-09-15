@@ -6,7 +6,6 @@
 import * as THREE from 'three'
 import * as dat from 'dat.gui'
 import * as Stats from 'stats-js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBEloader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { ref, reactive, getCurrentInstance, type ComponentInternalInstance, onMounted } from 'vue'

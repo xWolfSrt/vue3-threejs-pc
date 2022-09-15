@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBEloader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as ThreeUtil from './util'
+import { MOUSE } from 'three'
 
 export interface TEngineConfig {
     cameraConfig: ThreeUtil.CameraConfig
@@ -18,7 +19,7 @@ export class TEngine {
         this.dom = dom
 
         this.scene = new THREE.Scene()
-        this.camera = ThreeUtil.initCamera(config?.cameraConfig)
+        this.camera = ThreeUtil.initCamera(Object.assign({ aspect: dom.offsetWidth / dom.offsetHeight }, config?.cameraConfig))
         this.scene.add(this.camera)
 
         let width = dom.offsetWidth
@@ -31,6 +32,12 @@ export class TEngine {
         this.dom.appendChild(this.renderer.domElement)
 
         this.controls = ThreeUtil.initOrbitControls(this.camera, this.renderer.domElement)
+        // this.controls.autoRotate = true //自动旋转
+        this.controls.mouseButtons = {
+            LEFT: null as unknown as MOUSE, //释放鼠标左键
+            MIDDLE: MOUSE.DOLLY, //缩放
+            RIGHT: MOUSE.ROTATE, //使用鼠标右键 旋转视角，按住ctrl+右键 平移视角
+        }
         // window.addEventListener('resize', windowResizeCb)
     }
 
