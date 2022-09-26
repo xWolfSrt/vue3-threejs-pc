@@ -24,7 +24,7 @@ export function initCamera(config?: CameraConfig) {
     if (config?.position) {
         camera.position.set(config.position.x, config.position.y, config.position.z)
     } else {
-        camera.position.set(0, 0, 0)
+        camera.position.set(100, 100, 100)
     }
     if (config?.lookAt) {
         camera.lookAt(config.lookAt)

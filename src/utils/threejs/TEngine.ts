@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBEloader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as ThreeUtil from './util'
-import { MOUSE } from 'three'
+import { MOUSE, Object3D } from 'three'
 
 export interface TEngineConfig {
     cameraConfig: ThreeUtil.CameraConfig
@@ -26,7 +26,7 @@ export class TEngine {
         let height = dom.offsetHeight
         this.renderer = ThreeUtil.initWebGLRenderer({ width, height })
         // renderer.physicallyCorrectLights = true
-        // renderer.shadowMap.enabled = true
+        this.renderer.shadowMap.enabled = true
         // renderer.setClearColor(0xffffff, 1)
         this.renderer.setAnimationLoop(this.render.bind(this))
         this.dom.appendChild(this.renderer.domElement)
@@ -40,13 +40,21 @@ export class TEngine {
         }
         // window.addEventListener('resize', windowResizeCb)
     }
-
+    initBasicScene() {
+        this.addAxesHelper()
+        this.addAmbientLight()
+        this.addPointLight()
+        // this.addDirectionalLight()
+    }
     renderListener?: Function
     addRenderListener(listener: Function) {
         this.renderListener = listener
     }
     getScene() {
         return this.scene
+    }
+    getCamera() {
+        return this.camera
     }
     render() {
         this.controls.update()
@@ -58,7 +66,7 @@ export class TEngine {
     }
 
     addAxesHelper() {
-        const axesHelper = new THREE.AxesHelper(300)
+        const axesHelper = new THREE.AxesHelper(100)
         this.scene.add(axesHelper)
         return axesHelper
     }
@@ -70,23 +78,30 @@ export class TEngine {
     }
 
     addAmbientLight() {
-        const ambient = new THREE.AmbientLight(0xffffff)
+        const ambient = new THREE.AmbientLight(0x444444)
         this.scene.add(ambient)
         return ambient
     }
 
     addPointLight() {
-        const pointLight = new THREE.PointLight(0xffffff, 0.5, 100)
+        const pointLight = new THREE.PointLight(0xffffff, 0.5, 500)
         pointLight.position.set(-100, 50, 0)
+        pointLight.castShadow = true
         this.scene.add(pointLight)
         const pointLightHelper = new THREE.PointLightHelper(pointLight, 5, 0xff0000)
         this.scene.add(pointLightHelper)
     }
 
     addDirectionalLight() {
-        // const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
-        // directionalLight.position.set(100,100,100)
-        // directionalLight.target = scene
-        // scene.add(directionalLight)
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
+        directionalLight.position.set(100, 100, 100)
+        directionalLight.target = this.scene
+        this.scene.add(directionalLight)
+    }
+
+    addObjects(objects: Object3D[]) {
+        objects.forEach((item) => {
+            this.scene.add(item)
+        })
     }
 }

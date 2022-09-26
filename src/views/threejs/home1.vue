@@ -1,77 +1,46 @@
 <template>
-    <div ref="container" id="container"></div>
+    <div class="container" ref="container" id="container"></div>
 </template>
 
 <script lang="ts" setup>
 import * as THREE from 'three'
 import * as dat from 'dat.gui'
 import * as Stats from 'stats-js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBEloader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { ref, reactive, getCurrentInstance, type ComponentInternalInstance, onMounted } from 'vue'
+import { ref, reactive, getCurrentInstance, type ComponentInternalInstance, onMounted, onBeforeUnmount } from 'vue'
 
-import * as ThreeUtil from '../../utils/threejs/util'
+import { TEngine } from '../../utils/threejs/TEngine'
 import { Vector3 } from 'three'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const container = ref<HTMLElement | null>(null)
-let scene: THREE.Scene
-let camera: THREE.PerspectiveCamera
-let renderer: THREE.WebGLRenderer
-let controls: OrbitControls
 
 let modelF35: THREE.Group
 let modelF2a: THREE.Group
 
 let stats: any
 
+let engine: TEngine
+const gui = new dat.GUI()
+onBeforeUnmount(() => {
+    gui.destroy()
+})
 onMounted(() => {
     console.log(proxy)
     init()
     addObject()
 })
 const init = () => {
-    scene = new THREE.Scene()
-    console.log(scene)
-
-    // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-    // camera.position.set(100, 100, 100)
-    // camera.lookAt(scene.position)
-
-    camera = ThreeUtil.initCamera({
-        position: new Vector3(100, 100, 100),
-        lookAt: scene.position,
+    engine = new TEngine(container.value!, {
+        cameraConfig: {
+            position: new Vector3(100, 100, 100),
+            lookAt: new THREE.Vector3(0, 0, 0),
+        },
     })
-    scene.add(camera)
-
-    renderer = ThreeUtil.initWebGLRenderer({ width: window.innerWidth, height: window.innerHeight })
-    // renderer.physicallyCorrectLights = true
-    // renderer.shadowMap.enabled = true
-    // renderer.setClearColor(0xffffff, 1)
-    renderer.setAnimationLoop(render)
-    container.value?.appendChild(renderer.domElement)
-
-    controls = ThreeUtil.initOrbitControls(camera, renderer.domElement)
-
-    const axesHelper = new THREE.AxesHelper(300)
-    scene.add(axesHelper)
-
-    const gridHelper = new THREE.GridHelper(400, 40, 0x999999)
-    // scene.add(gridHelper)
-
-    const ambient = new THREE.AmbientLight(0xffffff)
-    scene.add(ambient)
-    const pointLight = new THREE.PointLight(0xffffff, 0.5, 100)
-    pointLight.position.set(-100, 50, 0)
-    scene.add(pointLight)
-    const pointLightHelper = new THREE.PointLightHelper(pointLight, 5, 0xff0000)
-    scene.add(pointLightHelper)
-    // const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
-    // directionalLight.position.set(100,100,100)
-    // directionalLight.target = scene
-    // scene.add(directionalLight)
+    engine.initBasicScene()
+    engine.addRenderListener(render)
 
     window.addEventListener('resize', windowResizeCb)
 }
@@ -89,6 +58,7 @@ const addObject = () => {
     //         scene.background = texture
     //         scene.environment = texture
     //     })
+    let scene = engine.getScene()
     const texture = textureLoader.load('images/1.jpg')
     texture.mapping = THREE.EquirectangularReflectionMapping
     scene.background = texture
@@ -152,7 +122,6 @@ const addObject = () => {
     scene.add(box)
 
     //变量控制
-    const gui = new dat.GUI()
     gui.add(sphere.position, 'x', 30, 60, 1)
         .name('球的x')
         .onChange((e) => {
@@ -211,31 +180,27 @@ const addObject = () => {
     stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(stats.dom)
 
-    //精灵模型
-    const sprite = ThreeUtil.getTextSprite({
-        position: new THREE.Vector3(-50, 50, 20),
-        scale: new THREE.Vector3(5, 5, 1),
-        text: '测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试',
-        size: 60,
-        color: 'red',
-        maxLine: 1,
-        maxWidth: 500,
-    })
-    scene.add(sprite)
+    // //精灵模型
+    // const sprite = ThreeUtil.getTextSprite({
+    //     position: new THREE.Vector3(-50, 50, 20),
+    //     scale: new THREE.Vector3(5, 5, 1),
+    //     text: '测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试测试一下文字测试一下文字文字下文字文字测试测试一下文字文字下文字文字测试',
+    //     size: 60,
+    //     color: 'red',
+    //     maxLine: 1,
+    //     maxWidth: 500,
+    // })
+    // scene.add(sprite)
 }
 
 const windowResizeCb = () => {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
-
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(window.devicePixelRatio)
+    // camera.aspect = window.innerWidth / window.innerHeight
+    // camera.updateProjectionMatrix()
+    // renderer.setSize(window.innerWidth, window.innerHeight)
+    // renderer.setPixelRatio(window.devicePixelRatio)
 }
 const clock = new THREE.Clock()
 const render = () => {
-    controls.update()
-    renderer.render(scene, camera)
-
     stats.update()
     if (modelF35) {
         const time = clock.getElapsedTime()
@@ -250,66 +215,11 @@ const render = () => {
     // boxMesh.position.x += 0.5
     // boxMesh.rotateY(0.01)
 }
-interface IDrawTextCanvasOptions {
-    text: string
-    size?: number
-    color?: string
-    maxLine?: number
-}
-const drawTextCanvas = (options: IDrawTextCanvasOptions) => {
-    let maxWidth = 300
-    let maxLine = options.maxLine || 2
-
-    let fontSize = options.size || 60
-    //行高
-    let lineHeigth = (fontSize * 4) / 3
-    let canvas = document.createElement('canvas')
-    canvas.width = maxWidth
-    canvas.height = maxLine * lineHeigth + (fontSize * 2) / 3
-    let ctx = canvas.getContext('2d')
-
-    if (ctx) {
-        // ctx.fillStyle = 'rgba(0 ,0 ,0 ,0.5)'
-        // ctx.fillRect(0, 0, canvas.width, canvas.height)
-        let chr = options.text.split('') //这个方法是将一个字符串分割成字符串数组
-        let temp = ''
-        let row = []
-        ctx.font = `${fontSize}px Verdana`
-        ctx.fillStyle = options.color || '#FFF'
-        for (let a = 0; a < chr.length; a++) {
-            if (ctx.measureText(temp).width < 250) {
-                temp += chr[a]
-            } else {
-                a-- //这里添加了a-- 是为了防止字符丢失，效果图中有对比
-                row.push(temp)
-                temp = ''
-            }
-        }
-        row.push(temp)
-        //如果数组长度大于2 则截取前两个
-        if (row.length > maxLine) {
-            let rowCut = row.slice(0, maxLine)
-            let rowPart = rowCut[maxLine - 1] //获取最后一段文字
-            let test = ''
-            let empty = []
-            for (let a = 0; a < rowPart.length; a++) {
-                if (ctx.measureText(test).width < 220) {
-                    test += rowPart[a]
-                } else {
-                    break
-                }
-            }
-            empty.push(test)
-            let group = empty[0] + '...' //这里只显示两行，超出的用...表示
-            rowCut.splice(maxLine - 1, 1, group)
-            row = rowCut
-        }
-        for (let b = 0; b < row.length; b++) {
-            ctx.fillText(row[b], 10, lineHeigth + b * lineHeigth, maxWidth)
-        }
-        return canvas
-    }
-}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.container {
+    width: 100%;
+    height: 100vh;
+}
+</style>

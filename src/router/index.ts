@@ -14,33 +14,28 @@ const routes = [
     //         { path: 'search', component: () => import('@/views/home/HomeSearch.vue') },
     //     ],
     // },
-    // {
-    //     path: '/live',
-    //     component: () => import('@/views/live/LiveRoot.vue'),
-    //     children: [{ path: '', component: () => import('@/views/live/Live.vue') }],
-    // },
-    // {
-    //     path: '/personal',
-    //     component: () => import('@/views/personal/PersonalRoot.vue'),
-    //     children: [
-    //         { path: '', component: () => import('@/views/personal/Personal.vue') },
-    //         { path: 'details', component: () => import('@/views/personal/PersonalDetails.vue') },
-    //         { path: 'settings', component: () => import('@/views/personal/PersonalSettings.vue') },
-    //     ],
-    // },
+
     {
-        path: '/work',
-        component: () => import('@/views/work/Work.vue'),
+        path: '/threejs',
+        component: () => import('@/views/threejs/index.vue'),
         children: [
-            { path: '', component: () => import('@/views/work/WorkHome.vue') },
-            // { path: 'search', component: () => import('@/views/work/WorkSearch.vue') },
-            { path: 'notification', component: () => import('@/views/work/notification/WorkNotification.vue') },
-            { path: 'question', component: () => import('@/views/work/question/WorkQuestion.vue') },
+            {
+                path: '',
+                component: () => import('@/views/threejs/home.vue'),
+            },
+            {
+                path: '/threejs/home1',
+                component: () => import('@/views/threejs/home1.vue'),
+            },
+            {
+                path: '/threejs/test1',
+                component: () => import('@/views/threejs/test1.vue'),
+            },
+            {
+                path: '/threejs/raycaster',
+                component: () => import('@/views/threejs/raycaster.vue'),
+            },
         ],
-    },
-    {
-        path: '/home',
-        component: () => import('@/views/home/Home1.vue'),
     },
     {
         path: '/:error*', // /:error -> 匹配 /, /one, /one/two, /one/two/three, 等

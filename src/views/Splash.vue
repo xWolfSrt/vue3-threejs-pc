@@ -95,7 +95,7 @@ function disposeConfig() {
     }
 }
 const jumpNext = () => {
-    proxy.$router.replace('/home')
+    proxy.$router.replace('/threejs')
 
     // let autoLogin = proxy.$storage.get('isAutoLogin')
     // if (!isLogin() || !autoLogin) {
