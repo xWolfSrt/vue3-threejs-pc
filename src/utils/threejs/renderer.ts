@@ -14,6 +14,6 @@ export function initWebGLRenderer(config: RendererConfig) {
         antialias: true,
     })
     renderer.setSize(config.width, config.height)
-    renderer.outputEncoding = THREE.sRGBEncoding //防止模型过暗
+    // renderer.outputEncoding = THREE.sRGBEncoding //防止模型过暗
     return renderer
 }

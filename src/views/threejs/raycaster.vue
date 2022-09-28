@@ -16,6 +16,7 @@ const raycaster = new THREE.Raycaster()
 onMounted(() => {
     engine = new TEngine(container.value!)
     engine.initBasicScene()
+    engine.addDirectionalLight()
     engine.addGridHelper()
 
     const planeGeometry = new THREE.PlaneGeometry(400, 400)

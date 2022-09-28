@@ -66,6 +66,18 @@ const initMenuList = () => {
                 name: 'raycaster',
                 path: '/threejs/raycaster',
             },
+            {
+                name: 'raycast',
+                path: '/threejs/raycast',
+            },
+            {
+                name: '围棋棋盘',
+                path: '/threejs/weiqi',
+            },
+            {
+                name: '模型预览',
+                path: '/threejs/model-preview',
+            },
         ]
     )
     console.log(list)

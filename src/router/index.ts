@@ -35,6 +35,18 @@ const routes = [
                 path: '/threejs/raycaster',
                 component: () => import('@/views/threejs/raycaster.vue'),
             },
+            {
+                path: '/threejs/raycast',
+                component: () => import('@/views/threejs/raycast.vue'),
+            },
+            {
+                path: '/threejs/weiqi',
+                component: () => import('@/views/threejs/weiqi.vue'),
+            },
+            {
+                path: '/threejs/model-preview',
+                component: () => import('@/views/threejs/model-preview.vue'),
+            },
         ],
     },
     {

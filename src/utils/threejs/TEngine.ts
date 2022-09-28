@@ -25,9 +25,10 @@ export class TEngine {
         let width = dom.offsetWidth
         let height = dom.offsetHeight
         this.renderer = ThreeUtil.initWebGLRenderer({ width, height })
-        // renderer.physicallyCorrectLights = true
+        // this.renderer.physicallyCorrectLights = true
         this.renderer.shadowMap.enabled = true
-        // renderer.setClearColor(0xffffff, 1)
+        // this.renderer.setClearColor(0xffffff, 1)
+        // this.renderer.outputEncoding = THREE.sRGBEncoding //防止模型过暗
         this.renderer.setAnimationLoop(this.render.bind(this))
         this.dom.appendChild(this.renderer.domElement)
 
@@ -71,8 +72,8 @@ export class TEngine {
         return axesHelper
     }
 
-    addGridHelper() {
-        const gridHelper = new THREE.GridHelper(400, 40, 0x999999)
+    addGridHelper(size?: number, divisions?: number, color1?: THREE.ColorRepresentation, color2?: THREE.ColorRepresentation) {
+        const gridHelper = new THREE.GridHelper(size || 400, divisions || 40, color1 || 0x999999, color2 || 0x999999)
         this.scene.add(gridHelper)
         return gridHelper
     }
@@ -93,7 +94,7 @@ export class TEngine {
     }
 
     addDirectionalLight() {
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5)
         directionalLight.position.set(100, 100, 100)
         directionalLight.target = this.scene
         this.scene.add(directionalLight)

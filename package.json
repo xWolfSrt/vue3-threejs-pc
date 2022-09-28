@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "[Vue3]ThreeJS框架",
     "scripts": {
-        "dev": "vite --port 8115",
+        "dev": "vite --host 192.168.31.200 --port 8115",
         "dev-kmax": "vite --host 172.16.12.129 --port 8115",
         "build": "run-p type-check build-only",
         "preview": "vite preview --port 4173",
